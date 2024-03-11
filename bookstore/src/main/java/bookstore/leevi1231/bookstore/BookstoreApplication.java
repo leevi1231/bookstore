@@ -12,6 +12,8 @@ import bookstore.leevi1231.bookstore.domain.Book;
 import bookstore.leevi1231.bookstore.domain.BookRepository;
 import bookstore.leevi1231.bookstore.domain.Category;
 import bookstore.leevi1231.bookstore.domain.CategoryRepository;
+import bookstore.leevi1231.bookstore.domain.User;
+import bookstore.leevi1231.bookstore.domain.UserRepository;
 
 @SpringBootApplication
 public class BookstoreApplication {
@@ -22,7 +24,7 @@ public class BookstoreApplication {
 	}
 
 	@Bean
-	public CommandLineRunner bookDemo(BookRepository repository, CategoryRepository repository2) {
+	public CommandLineRunner bookDemo(BookRepository repository, CategoryRepository repository2, UserRepository repository3) {
 		return (args) -> {
 			
 			Category category1 = new Category("Scifi");
@@ -40,6 +42,13 @@ public class BookstoreApplication {
 			for (Book book : repository.findAll()) {
 				log.info(book.toString());
 			}
+			
+			User user1 = new User("user",
+			"$2a$06$3jYRJrg0ghaaypjZ/.g4SethoeA51ph3UD4kZi9oPkeMTpjKU5uo6", "USER");
+			User user2 = new User("admin",
+			"$2a$10$0MMwY.IQqpsVc1jC8u7IJ.2rT8b0Cd3b3sfIBGV2zfgnPGtT4r0.C", "ADMIN");
+			repository3.save(user1);
+			repository3.save(user2);
 
 		};
 	}
