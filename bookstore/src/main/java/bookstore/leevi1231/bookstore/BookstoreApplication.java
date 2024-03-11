@@ -50,6 +50,9 @@ public class BookstoreApplication {
 			repository3.save(user1);
 			repository3.save(user2);
 
+			log.info(user1.toString());
+			log.info(user2.toString());
+
 		};
 	}
 }
