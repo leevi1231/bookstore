@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class BookRestController {
     }      
     
     @RequestMapping(value="/books", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public @ResponseBody Book saveBookRest(@RequestBody Book book) {	
     	return repository.save(book);
     }
