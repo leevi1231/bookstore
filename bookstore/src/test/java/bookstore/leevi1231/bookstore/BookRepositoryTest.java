@@ -6,16 +6,24 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import bookstore.leevi1231.bookstore.domain.Book;
 import bookstore.leevi1231.bookstore.domain.BookRepository;
+import bookstore.leevi1231.bookstore.domain.Category;
+import bookstore.leevi1231.bookstore.domain.CategoryRepository;
 
-@DataJpaTest
+// @DataJpaTest
+@SpringBootTest(classes = BookstoreApplication.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class BookRepositoryTest {
-    
+
     @Autowired
     private BookRepository repository;
+
+    @Autowired
+    private CategoryRepository repository2;
 
     @Test
     public void findByLastnameShouldReturnStudent() {
@@ -26,8 +34,19 @@ public class BookRepositoryTest {
 
     @Test
     public void createNewStudent() {
-        Book book = new Book("To Kill a Mockingbird", "Harper Lee", 1960, "978-0061120084", 9.99, null);
+        Category category = new Category("Scifi");
+    	repository2.save(category);
+        Book book = new Book("1984", "George Orwell", 1960, "978-0061120084", 9.99, category);
         repository.save(book);
         assertThat(book.getId()).isNotNull();
+    }
+
+    @Test
+    public void deleteNewBook() {
+        List<Book> books = repository.findByTitle("To Kill a Mockingbird");
+        Book book = books.get(0);
+        repository.delete(book);
+        List<Book> newBooks = repository.findByTitle("To Kill a Mockingbird");
+        assertThat(newBooks).hasSize(0);
     }
 }
