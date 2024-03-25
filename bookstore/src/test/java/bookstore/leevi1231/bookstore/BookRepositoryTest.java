@@ -6,17 +6,14 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import bookstore.leevi1231.bookstore.domain.Book;
 import bookstore.leevi1231.bookstore.domain.BookRepository;
 import bookstore.leevi1231.bookstore.domain.Category;
 import bookstore.leevi1231.bookstore.domain.CategoryRepository;
 
-// @DataJpaTest
-@SpringBootTest(classes = BookstoreApplication.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest
 public class BookRepositoryTest {
 
     @Autowired
@@ -26,14 +23,15 @@ public class BookRepositoryTest {
     private CategoryRepository repository2;
 
     @Test
-    public void findByLastnameShouldReturnStudent() {
+    public void findByTitleShouldReturnAuthor() {
         List<Book> books = repository.findByTitle("To Kill a Mockingbird");
+
         assertThat(books).hasSize(1);
         assertThat(books.get(0).getAuthor()).isEqualTo("Harper Lee");
     }
 
     @Test
-    public void createNewStudent() {
+    public void createNewBook() {
         Category category = new Category("Scifi");
     	repository2.save(category);
         Book book = new Book("1984", "George Orwell", 1960, "978-0061120084", 9.99, category);
